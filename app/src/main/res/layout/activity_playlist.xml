@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".PlaylistActivity">
+
+    <!-- IDs:
+     - b_seleccionarCarpeta
+     - b_volverAMain
+     - CardView:
+        - recyclerViewPlaylist
+    -->
+
+    <!-- titulo cancion -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/texto_listaCanciones"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- boton seleccionar carpeta -->
+    <Button
+        android:id="@+id/b_seleccionarCarpeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/seleccionar_carpeta"
+        android:textSize="16sp"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- boton volver a MainActivity -->
+    <Button
+        android:id="@+id/b_volverAMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/volver_a_main"
+        android:textSize="16sp"
+        android:layout_marginBottom="40dp"/>
+
+    <!-- Recyclerview lista canciones -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPlaylist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="vertical"/>
+</LinearLayout>

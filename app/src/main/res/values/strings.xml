@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MP3v2</string>
+    <string name="cargar_canciones">Cargar canciones</string>
+    <string name="texto_predeterminado_titulo_cancion">No hay canción cargada</string>
+    <string name="texto_predeterminado_artista_cancion">Artista desconocido</string>
+    <string name="texto_predeterminado_tiempo">00:00</string>
+    <string name="texto_listaCanciones">Canciones</string>
+    <string name="texto_predeterminado_item_titulo">Título canción</string>
+    <string name="texto_predeterminado_item_artista">Artista canción</string>
+    <string name="seleccionar_carpeta">Seleccionar carpeta de canciones</string>
+    <string name="volver_a_main">Volver a pantalla Principal</string>
+</resources>
