@@ -9,6 +9,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
 import androidx.media3.exoplayer.ExoPlayer;
 
@@ -54,6 +57,7 @@ public class ServicioMusica extends Service {
     //variables
     private ExoPlayer player;
     private MediaSessionCompat mediaSession;
+    private Bitmap portada= null;       //inicializar pa. prevenir errores
 
     //manejo playlist
     private List<Cancion> listaCanciones= new ArrayList<>();
@@ -67,11 +71,20 @@ public class ServicioMusica extends Service {
     private String titulo= "No hay canción";
     private String artista= "Desconocido";
 
+    //callback pa. actualizar UI
+    public interface CallbackUI{
+        void onActualizarPortada(Bitmap portada);
+        void onActualizarCancion(String titulo, String artista);
+    }
+    private CallbackUI callbackUI;
+
     public class BinderMusica extends Binder{
         public ServicioMusica getService(){
             return ServicioMusica.this;
         }
     }
+
+    public void setCallbackUI(CallbackUI c){ this.callbackUI= c;}
 
     @Nullable
     @Override
@@ -79,6 +92,15 @@ public class ServicioMusica extends Service {
         return binder;
     }
 
+    /** (AUTO-GENERADO POR GEMINI)
+     * Se llama cuando el servicio se está creando por primera vez.
+     * Inicializa los componentes principales del servicio:
+     * - Crea el canal de notificaciones (para Android O y superior).
+     * - Inicializa la MediaSession para la integración con el sistema.
+     * - Crea una instancia de ExoPlayer, el reproductor de medios.
+     * - Añade un listener a ExoPlayer para detectar cambios de estado, como el final de una canción,
+     *   y para actualizar la notificación en consecuencia.
+     */
     @Override
     public void onCreate(){
         super.onCreate();
@@ -100,6 +122,27 @@ public class ServicioMusica extends Service {
 
             @Override
             public void onIsPlayingChanged(boolean isPlaying) { actualizarNotificacion();}
+
+            @Override
+            public void onMediaMetadataChanged(MediaMetadata mediaMetadata) {
+                if(mediaMetadata.artworkData != null){
+                    portada= BitmapFactory.decodeByteArray(
+                            mediaMetadata.artworkData,
+                            0,
+                            mediaMetadata.artworkData.length
+                    );
+                }
+                else{
+                    portada= null;
+                }
+
+                if(callbackUI != null){
+                    callbackUI.onActualizarPortada(portada);
+                    callbackUI.onActualizarCancion(titulo, artista);
+                }
+
+                actualizarNotificacion();
+            }
         });
     }
 
@@ -175,6 +218,7 @@ public class ServicioMusica extends Service {
 
         titulo= cancion.getTitulo();
         artista= cancion.getArtista();
+        if(callbackUI != null){ callbackUI.onActualizarCancion(titulo, artista);}
 
         MediaItem item= MediaItem.fromUri(Uri.parse(cancion.getPath()));
         player.setMediaItem(item);
@@ -272,7 +316,7 @@ public class ServicioMusica extends Service {
     public void setRepetirLista(int modo){ this.modoRepetir= modo;}
     public int getModoRepetir(){ return modoRepetir;}
     public void setIndexCancion(int index){ this.indexCancion= index;}
-
+    public Bitmap getPortada(){ return portada;}
 
 
 
@@ -323,7 +367,8 @@ public class ServicioMusica extends Service {
                 intentSiguiente
         );
 
-        return new NotificationCompat.Builder(this, ID_CANAL)
+        NotificationCompat.Builder builder=
+                new NotificationCompat.Builder(this, ID_CANAL)
                 .setContentTitle(titulo)
                 .setContentText(artista)
                 .setSmallIcon(android.R.drawable.ic_media_play)
@@ -335,8 +380,11 @@ public class ServicioMusica extends Service {
                         .setShowActionsInCompactView(0,1,2))
                 .addAction(accionAnterior)
                 .addAction(accionPlayPausa)
-                .addAction(accionSiguiente)
-                .build();
+                .addAction(accionSiguiente);
+
+        if(portada != null){ builder.setLargeIcon(portada);}
+
+        return builder.build();
     }
 
     private void actualizarNotificacion(){

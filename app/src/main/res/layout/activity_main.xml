@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,9 +10,15 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
-    <!-- IDs:
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- IDs:
      - b_cargarCanciones
      - CardView:
+        - i_portada
         - tv_tituloCancion
         - tv_artistaCancion
         - tv_tiempoActual
@@ -31,164 +37,173 @@
         - b_adelantar
      -->
 
-    <Button
-        android:id="@+id/b_cargarCanciones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cargar_canciones"
-        android:layout_marginBottom="40dp"/>
-
-    <!-- Sección donde se despliega canción actualmente reproduciéndose -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
-
-        <LinearLayout
+        <Button
+            android:id="@+id/b_cargarCanciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:text="@string/cargar_canciones"
+            android:layout_marginBottom="40dp"/>
 
-            <TextView
-                android:id="@+id/tv_tituloCancion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_predeterminado_titulo_cancion"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"/>
+        <!-- Sección donde se despliega canción actualmente reproduciéndose -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
 
-            <TextView
-                android:id="@+id/tv_artistaCancion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/texto_predeterminado_artista_cancion"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:layout_marginTop="10dp"/>
-
-            <!-- Tiempos de la canción -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/i_portada"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="20dp"/>
 
                 <TextView
-                    android:id="@+id/tv_tiempoActual"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_tituloCancion"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/texto_predeterminado_tiempo"
-                    android:textSize="12sp"/>
+                    android:text="@string/texto_predeterminado_titulo_cancion"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
 
                 <TextView
-                    android:id="@+id/tv_tiempoCancion"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_artistaCancion"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="@string/texto_predeterminado_tiempo"
-                    android:textSize="12sp"/>
+                    android:text="@string/texto_predeterminado_artista_cancion"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"/>
+
+                <!-- Tiempos de la canción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_tiempoActual"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/texto_predeterminado_tiempo"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_tiempoCancion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="@string/texto_predeterminado_tiempo"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <!-- Barra de tiempo (Seekbar) -->
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"/>
+
+                <!-- Controles de canción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <ImageButton
+                        android:id="@+id/b_cancionAnterior"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="20dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_pausarCancion"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="20dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_cancionSiguiente"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="20dp"/>
+                </LinearLayout>
+
+                <!-- controles de canción 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <ImageButton
+                        android:id="@+id/b_retroceder"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_detener"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_modoAleatorio"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_modos"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/b_adelantar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_marginEnd="10dp"/>
+                </LinearLayout>
+
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <!-- Barra de tiempo (Seekbar) -->
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"/>
+        <!-- Lista de canciones -->
+        <!--TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/texto_listaCanciones"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"/-->
 
-            <!-- Controles de canción -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/b_cancionAnterior"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="20dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_pausarCancion"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="20dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_cancionSiguiente"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="20dp"/>
-            </LinearLayout>
-
-            <!-- controles de canción 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
-
-                <ImageButton
-                    android:id="@+id/b_retroceder"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="10dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_detener"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="10dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_modoAleatorio"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="10dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_modos"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="10dp"/>
-
-                <ImageButton
-                    android:id="@+id/b_adelantar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_marginEnd="10dp"/>
-            </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Lista de canciones -->
-    <!--TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/texto_listaCanciones"
-        android:textSize="16sp"
-        android:layout_marginBottom="10dp"/-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-</LinearLayout>
+</ScrollView>

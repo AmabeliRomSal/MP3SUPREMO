@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar seekBar;
     private ImageButton b_cancionAnterior, b_pausarCancion, b_cancionSiguiente;
     private ImageButton b_retroceder, b_adelantar, b_detener, b_modoAleatorio, b_modos;
+    private ImageView i_portada;
 
     //conexión al servicio de música
     private ServicioMusica servicioMusica;      //ServicioMusica.java
@@ -84,6 +87,24 @@ public class MainActivity extends AppCompatActivity {
             ServicioMusica.BinderMusica binder= (ServicioMusica.BinderMusica) servicio;
             servicioMusica= binder.getService();
             servicioUnido= true;
+
+            servicioMusica.setCallbackUI(new ServicioMusica.CallbackUI() {
+                @Override
+                public void onActualizarPortada(Bitmap portada) {
+                    runOnUiThread(() -> {
+                        if(portada != null){ i_portada.setImageBitmap(portada);}
+                        else{ i_portada.setImageResource(R.drawable.ic_launcher_foreground);}
+                    });
+                }
+
+                @Override
+                public void onActualizarCancion(String titulo, String artista) {
+                    runOnUiThread(() -> {
+                        tv_tituloCancion.setText(titulo);
+                        tv_artistaCancion.setText(artista);
+                    });
+                }
+            });
 
             actualizarSeekBar();
         }
@@ -127,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         b_cancionAnterior= findViewById(R.id.b_cancionAnterior);
         b_pausarCancion= findViewById(R.id.b_pausarCancion);
         b_cancionSiguiente= findViewById(R.id.b_cancionSiguiente);
+        i_portada= findViewById(R.id.i_portada);
 
         b_retroceder= findViewById(R.id.b_retroceder);
         b_adelantar= findViewById(R.id.b_adelantar);
@@ -303,6 +325,9 @@ public class MainActivity extends AppCompatActivity {
         //actualizar UI
         tv_tituloCancion.setText(cancion.getTitulo());
         tv_artistaCancion.setText(cancion.getArtista());
+        Bitmap portada= servicioMusica.getPortada();
+        if(portada != null){ i_portada.setImageBitmap(portada);}
+        else{ i_portada.setImageResource(R.drawable.ic_launcher_foreground);}
         actualizarBotonPlayPause();
     }
 
